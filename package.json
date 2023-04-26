@@ -1,0 +1,66 @@
+{
+  "name": "zut",
+  "version": "0.0.0-development",
+  "description": "",
+  "main": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "check": "rome check src/",
+    "format": "rome format src/ --write",
+    "check-typescript": "tsc --noEmit",
+    "ca": "pnpm format && pnpm check && pnpm check-typescript",
+    "build": "tsup-node",
+    "dev": "tsup-node --watch",
+    "test:dev": "vite"
+  },
+  "homepage": "https://github.com/jundaoapp/zut",
+  "bugs": {
+    "url": "https://github.com/jundaoapp/zut/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jundaoapp/zut.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "rome": "^12.0.0",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.4",
+    "vite": "^4.2.1",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/github": "^8.0.7",
+    "@semantic-release/npm": "^9.0.2",
+    "@semantic-release/release-notes-generator": "^10.0.3",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
+    "semantic-release": "^20.1.1"
+  },
+  "exports": {
+    "import": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "typesVersions": {},
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "dependencies": {
+    "@emotion/css": "^11.10.6",
+    "context": "^3.0.5",
+    "error-stack-parser": "^2.1.4",
+    "highlight.js": "^11.7.0",
+    "source-map": "^0.7.4"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "source-map@0.7.4": "patches/source-map@0.7.4.patch"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "sideEffects": true
+}
