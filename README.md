@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="400" src="https://github.com/jundaoapp/zut/blob/main/.github/zut-banner.png?raw=true" alt="Jundao Zut banner">
+  <img width="900" src="https://github.com/jundaoapp/zut/blob/main/.github/zut-banner.png?raw=true" alt="Jundao Zut banner">
 </div>
 
 <h1 align="center">@jundao/zut</h1>
@@ -10,9 +10,9 @@
 
   Zut (French word for "damn", pronouced [`/zyt/`](https://s3-eu-west-1.amazonaws.com/com.idmgroup.lab.sounds.prod/fr/a/8/c/a8cd54ec3d9cdf563b4c3558ee28e4ee.mp3))
 
-  [![license](https://img.shields.io/badge/license-MIT-1890ff.svg)](https://github.com/jundaoapp/design/blob/main/LICENSE)
-  [![checks](https://img.shields.io/github/checks-status/jundaoapp/zut/main)](https://github.com/jundaoapp/design/actions)
-  [![npm](https://img.shields.io/npm/v/@jundao/zut)](https://www.npmjs.com/package/@jundao/design)
+  [![license](https://img.shields.io/badge/license-MIT-1890ff.svg)](https://github.com/jundaoapp/zut/blob/main/LICENSE)
+  [![checks](https://img.shields.io/github/checks-status/jundaoapp/zut/main)](https://github.com/jundaoapp/zut/actions)
+  [![npm](https://img.shields.io/npm/v/@jundao/zut)](https://www.npmjs.com/package/@jundao/zut)
 
 </div>
 
