@@ -1,7 +1,7 @@
 {
-  "name": "zut",
+  "name": "@jundao/zut",
   "version": "0.0.0-development",
-  "description": "",
+  "description": "Pretty error overlay for browser side JS errors.",
   "main": "./dist/index.js",
   "type": "module",
   "scripts": {

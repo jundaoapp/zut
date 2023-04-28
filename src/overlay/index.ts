@@ -1,7 +1,7 @@
-import {useZutContext} from "../index";
-import { css } from '@emotion/css';
-import {getLeftPanel} from "./left";
-import {getRightPanel} from "./right";
+import { useZutContext } from "../index";
+import { css } from "@emotion/css";
+import { getLeftPanel } from "./left";
+import { getRightPanel } from "./right";
 
 const overlayId = "zut-overlay";
 
@@ -10,23 +10,25 @@ const staticHtml = `
 `;
 
 export function getOverlay(): HTMLDivElement {
-  return document.getElementById(overlayId) as HTMLDivElement || createOverlay();
+	return (
+		(document.getElementById(overlayId) as HTMLDivElement) || createOverlay()
+	);
 }
 
 function createOverlay(): HTMLDivElement {
-  const theme = useZutContext().theme;
-  
-  const overlayBackdropClass = css`
+	const theme = useZutContext().theme;
+
+	const overlayBackdropClass = css`
     position: fixed;
     backdrop-filter: blur(2px);
     inset: 0;
   `;
 
-  const backdrop = document.createElement("div");
-  backdrop.className = overlayBackdropClass;
-  backdrop.id = overlayId;
-  
-  const overlayClass = css`
+	const backdrop = document.createElement("div");
+	backdrop.className = overlayBackdropClass;
+	backdrop.id = overlayId;
+
+	const overlayClass = css`
     position: fixed;
     inset: min(2rem, 5vw);
     display: flex;
@@ -41,19 +43,17 @@ function createOverlay(): HTMLDivElement {
     }
   `;
 
-  const overlay = document.createElement("div");
-  overlay.className = overlayClass;
-  
-  
-  const staticHtmlNode = document.createElement("div");
-  staticHtmlNode.innerHTML = staticHtml;
-  overlay.appendChild(staticHtmlNode)
-  
-  
-  overlay.appendChild(getLeftPanel());
-  overlay.appendChild(getRightPanel());
+	const overlay = document.createElement("div");
+	overlay.className = overlayClass;
 
-  backdrop.appendChild(overlay);
-  document.body.appendChild(backdrop);
-  return backdrop;
+	const staticHtmlNode = document.createElement("div");
+	staticHtmlNode.innerHTML = staticHtml;
+	overlay.appendChild(staticHtmlNode);
+
+	overlay.appendChild(getLeftPanel());
+	overlay.appendChild(getRightPanel());
+
+	backdrop.appendChild(overlay);
+	document.body.appendChild(backdrop);
+	return backdrop;
 }

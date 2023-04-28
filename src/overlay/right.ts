@@ -1,14 +1,18 @@
 import hljs from "highlight.js";
-import 'highlight.js/styles/atom-one-dark.css';
-import {useZutContext} from "../index";
-import {css} from "@emotion/css";
-import {getFileExtension, getFileName, isNodeModule} from "../stacktrace/utils";
+import "highlight.js/styles/atom-one-dark.css";
+import { useZutContext } from "../index";
+import { css } from "@emotion/css";
+import {
+	getFileExtension,
+	getFileName,
+	isNodeModule,
+} from "../stacktrace/utils";
 
 export function getRightPanel() {
-  const theme = useZutContext().theme;
-  const stackframes = useZutContext().stackframes;
+	const theme = useZutContext().theme;
+	const stackframes = useZutContext().stackframes;
 
-  const rightPanelClass = css`
+	const rightPanelClass = css`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -16,11 +20,11 @@ export function getRightPanel() {
     overflow: auto;
   `;
 
-  const rightPanel = document.createElement("div");
-  rightPanel.className = rightPanelClass;
+	const rightPanel = document.createElement("div");
+	rightPanel.className = rightPanelClass;
 
-  if (useZutContext().stackframes === undefined) {
-    const noStackframeClass = css`
+	if (useZutContext().stackframes.length === 0) {
+		const noStackframeClass = css`
       display: flex;
       gap: 1rem;
       padding: .5rem;
@@ -28,13 +32,13 @@ export function getRightPanel() {
       justify-content: center;
     `;
 
-    const noframes = document.createElement("div");
-    noframes.className = noStackframeClass;
-    noframes.innerText = useZutContext().options.noStacktraceTranslation;
+		const noframes = document.createElement("div");
+		noframes.className = noStackframeClass;
+		noframes.innerText = useZutContext().options.noStacktraceTranslation ?? "";
 
-    rightPanel.appendChild(noframes);
-  } else {
-    const codePreviewFilenameClass = css`
+		rightPanel.appendChild(noframes);
+	} else {
+		const codePreviewFilenameClass = css`
       background: ${theme.hoverBackground};
       border-bottom: 1px solid ${theme.activeBackground};
       margin: 1rem 1rem 0 0;
@@ -42,15 +46,14 @@ export function getRightPanel() {
       flex-shrink: 0;
     `;
 
-    const codePreviewFilename = document.createElement("div");
-    codePreviewFilename.className = codePreviewFilenameClass;
+		const codePreviewFilename = document.createElement("div");
+		codePreviewFilename.className = codePreviewFilenameClass;
 
-    rightPanel.appendChild(codePreviewFilename);
+		rightPanel.appendChild(codePreviewFilename);
 
-    rightPanel.appendChild(getCodePreview());
+		rightPanel.appendChild(getCodePreview());
 
-
-    const codePreviewLineNumberClass = css`
+		const codePreviewLineNumberClass = css`
       background: ${theme.hoverBackground};
       padding-top: .5rem;
       border-top: 1px solid ${theme.activeBackground};
@@ -58,37 +61,46 @@ export function getRightPanel() {
       padding: .5rem 1rem;
     `;
 
-    const codePreviewLineNumber = document.createElement("div");
-    codePreviewLineNumber.className = codePreviewLineNumberClass;
+		const codePreviewLineNumber = document.createElement("div");
+		codePreviewLineNumber.className = codePreviewLineNumberClass;
 
-    rightPanel.appendChild(codePreviewLineNumber);
-    
-    for (let i = 0; i < stackframes.length; i++){
-      const frame = stackframes[i];
-      if (!isNodeModule(frame.getFileName())) {
-        codePreviewFilename.innerText = getFileName(stackframes[i].getSource());
-        codePreviewLineNumber.innerText = stackframes[i].getLineNumber() + ":" + stackframes[i].getColumnNumber();
-        break;
-      }
-    }
+		rightPanel.appendChild(codePreviewLineNumber);
 
+		for (let i = 0; i < stackframes.length; i++) {
+			const frame = stackframes[i];
+			if (!isNodeModule(frame.getFileName())) {
+				codePreviewFilename.innerText =
+					getFileName(stackframes[i].getSource()) ?? "";
+				codePreviewLineNumber.innerText = `${stackframes[
+					i
+				].getLineNumber()}:${stackframes[i].getColumnNumber()}`;
+				break;
+			}
+		}
 
-    document.addEventListener("zut:change-current-frame", ({detail}) => {
-      codePreviewFilename.innerText = getFileName(stackframes[detail.index].getSource());
-      codePreviewLineNumber.innerText = stackframes[detail.index].getLineNumber() + ":" + stackframes[detail.index].getColumnNumber();
-    });
-  }
+		// @ts-ignore: TS doesn't work with custom event
+		document.addEventListener(
+			"zut:change-current-frame",
+			({ detail }: CustomEvent<{ index: number }>) => {
+				codePreviewFilename.innerText =
+					getFileName(stackframes[detail.index].getSource()) ?? "";
+				codePreviewLineNumber.innerText = `${stackframes[
+					detail.index
+				].getLineNumber()}:${stackframes[detail.index].getColumnNumber()}`;
+			},
+		);
+	}
 
-  return rightPanel;
+	return rightPanel;
 }
 
 function getCodePreview() {
-  const theme = useZutContext().theme;
-  const stackframes = useZutContext().stackframes;
-  const maxHighlightLenght = useZutContext().options.maxHighlightLenght;
-  const presetExtensions = useZutContext().options.presetExtension;
+	const theme = useZutContext().theme;
+	const stackframes = useZutContext().stackframes;
+	const maxHighlightLenght = useZutContext().options.maxHighlightLenght ?? 0;
+	const presetExtensions = useZutContext().options.presetExtension ?? {};
 
-  const codePreviewClass = css`
+	const codePreviewClass = css`
     background: ${theme.hoverBackground};
     height: 100%;
     margin: 0 1rem 0 0;
@@ -98,17 +110,17 @@ function getCodePreview() {
     overflow: auto;
   `;
 
-  const codePreview = document.createElement("pre");
-  codePreview.className = codePreviewClass;
+	const codePreview = document.createElement("pre");
+	codePreview.className = codePreviewClass;
 
-  const codeHighlightedLineClass = css`
+	const codeHighlightedLineClass = css`
     background: ${theme.highlightedBackground};
   `;
 
-  async function hightlight(frameIndex: number) {
-    codePreview.innerHTML = "";
+	async function hightlight(frameIndex: number) {
+		codePreview.innerHTML = "";
 
-    const codePreviewLineNumberClass = css`
+		const codePreviewLineNumberClass = css`
       font-family: ${theme.monoFont};
       opacity: ${theme.mutedOpacity};
       text-align: right;
@@ -122,56 +134,70 @@ function getCodePreview() {
       }
     `;
 
-    const codePreviewLineNumber = document.createElement("div");
-    codePreviewLineNumber.className = codePreviewLineNumberClass;
+		const codePreviewLineNumber = document.createElement("div");
+		codePreviewLineNumber.className = codePreviewLineNumberClass;
 
-    const codePreviewHtmlClass = css`
+		const codePreviewHtmlClass = css`
       font-family: ${theme.monoFont};
       height: max-content;
     `;
 
-    const codePreviewHtml = document.createElement("code");
-    codePreviewHtml.className = codePreviewHtmlClass;
-    const sourceCode = stackframes[frameIndex].getSourceContent();
-    const hljsAuto = sourceCode.length < maxHighlightLenght ? (
-      getFileExtension(stackframes[frameIndex].getSource()) in presetExtensions ?
-        hljs.highlight(presetExtensions[getFileExtension(stackframes[frameIndex].getSource())], sourceCode) :
-        hljs.highlightAuto(sourceCode)
-    ) : undefined;
-    const highlightedCode = hljsAuto ? hljsAuto.value : sourceCode;
-    
-    console.log(hljsAuto);
+		const codePreviewHtml = document.createElement("code");
+		codePreviewHtml.className = codePreviewHtmlClass;
+		const sourceCode = stackframes[frameIndex].getSourceContent();
+		const hljsAuto =
+			sourceCode.length < maxHighlightLenght
+				? getFileExtension(stackframes[frameIndex].getSource()) in
+				  presetExtensions
+					? hljs.highlight(
+							presetExtensions[
+								getFileExtension(stackframes[frameIndex].getSource())
+							],
+							sourceCode,
+					  )
+					: hljs.highlightAuto(sourceCode)
+				: undefined;
+		const highlightedCode = hljsAuto ? hljsAuto.value : sourceCode;
 
-    const splitHighlightedCode = highlightedCode.split("\n");
+		console.log(hljsAuto);
 
-    for (let i = 0; i < splitHighlightedCode.length; i++) {
-      if (stackframes[frameIndex].getLineNumber() === i + 1) {
-        codePreviewLineNumber.innerHTML += `<span class="${codeHighlightedLineClass}">${String(i + 1)}</span>` + "\n";
-        codePreviewHtml.innerHTML += `<span class="${codeHighlightedLineClass}">${splitHighlightedCode[i]}</span>` + "\n";
-      } else {
-        codePreviewLineNumber.innerHTML += String(i + 1) + "\n";
-        codePreviewHtml.innerHTML += splitHighlightedCode[i] + "\n";
-      }
-    }
+		const splitHighlightedCode = highlightedCode.split("\n");
 
-    codePreview.appendChild(codePreviewLineNumber);
-    codePreview.appendChild(codePreviewHtml);
+		for (let i = 0; i < splitHighlightedCode.length; i++) {
+			if (stackframes[frameIndex].getLineNumber() === i + 1) {
+				codePreviewLineNumber.innerHTML += `<span class="${codeHighlightedLineClass}">${String(
+					i + 1,
+				)}</span>\n`;
+				codePreviewHtml.innerHTML += `<span class="${codeHighlightedLineClass}">${splitHighlightedCode[i]}</span>\n`;
+			} else {
+				codePreviewLineNumber.innerHTML += String(i + 1) + "\n";
+				codePreviewHtml.innerHTML += splitHighlightedCode[i] + "\n";
+			}
+		}
 
-    document.querySelector(`.${codeHighlightedLineClass}`).scrollIntoView({block: "center"});
-  }
+		codePreview.appendChild(codePreviewLineNumber);
+		codePreview.appendChild(codePreviewHtml);
 
-  
-  for (let i = 0; i < stackframes.length; i++){
-    const frame = stackframes[i];
-    if (!isNodeModule(frame.getFileName())) {
-      hightlight(i);
-      break;
-    }
-  }
+		document
+			.querySelector(`.${codeHighlightedLineClass}`)
+			?.scrollIntoView({ block: "center" });
+	}
 
-  document.addEventListener("zut:change-current-frame", ({detail}) => {
-    hightlight(detail.index);
-  });
+	for (let i = 0; i < stackframes.length; i++) {
+		const frame = stackframes[i];
+		if (!isNodeModule(frame.getFileName())) {
+			hightlight(i);
+			break;
+		}
+	}
 
-  return codePreview;
+	// @ts-ignore: TS doesn't work with custom event
+	document.addEventListener(
+		"zut:change-current-frame",
+		({ detail }: CustomEvent<{ index: number }>) => {
+			hightlight(detail.index);
+		},
+	);
+
+	return codePreview;
 }
