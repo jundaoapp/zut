@@ -42,6 +42,7 @@ function getSubtitle() {
 
 function getTitle() {
 	const error = useZutContext().error;
+	const unknowTranslation = useZutContext().options.unknownTranslation ?? "";
 
 	const titleClass = css`
     font-size: 2.375rem;
@@ -55,7 +56,7 @@ function getTitle() {
 	if (error instanceof Error) title.innerText = error.message;
 	else if (typeof error === "string") title.innerText = error;
 	else if (typeof error === "number") title.innerText = String(error);
-	else title.innerText = "Unknown";
+	else title.innerText = unknowTranslation;
 
 	return title;
 }

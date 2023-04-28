@@ -8,6 +8,7 @@ export interface ZutOptions {
 	theme?: Partial<ZutTheme>;
 	maxHighlightLenght?: number;
 	noStacktraceTranslation?: string;
+	unknownTranslation?: string;
 	presetExtension?: Record<string, string>;
 }
 
@@ -31,6 +32,7 @@ export default class Zut {
 			options: {
 				maxHighlightLenght: 4000,
 				noStacktraceTranslation: "No Stacktrace",
+				unknownTranslation: "Unknown",
 				...options,
 				presetExtension: {
 					ts: "typescript",
