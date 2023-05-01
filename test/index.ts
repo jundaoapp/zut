@@ -8,5 +8,5 @@ try {
   t();
 } catch (error) {
   console.log(error);
-  new Zut(error, {shortcuts: ["one", "two"]});
+  new Zut(error, {mutedEntries: [/custom/]});
 }

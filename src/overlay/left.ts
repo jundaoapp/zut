@@ -1,6 +1,7 @@
 import { useZutContext } from "../index";
 import { css } from "@emotion/css";
-import { getStackList } from "./stacklist";
+import {getStackList, mutedHiddenClass} from "./stacklist";
+import {overlayId} from "./index";
 
 export function getLeftPanel() {
 	const leftPanelClass = css`
@@ -14,6 +15,7 @@ export function getLeftPanel() {
 
 	leftPanel.appendChild(getSubtitle());
 	leftPanel.appendChild(getTitle());
+	leftPanel.appendChild(getToggle());
 	leftPanel.appendChild(getSeparator());
 	leftPanel.appendChild(getStackList());
 
@@ -77,4 +79,35 @@ function getSeparator() {
 	separator.className = separatorClass;
 
 	return separator;
+}
+
+
+function getToggle() {
+	const toggleMutedClass = css`
+	  font-size: .75rem;
+    margin: .5rem 0 -.25rem 0;
+	  user-select: none;
+
+	  input {
+	    margin-right: .4rem;
+	  }
+  `;
+
+	const toggleMuted = document.createElement("label");
+	toggleMuted.className = toggleMutedClass;
+
+	const toggleMutedCheckbox = document.createElement("input");
+	toggleMutedCheckbox.type = "checkbox";
+
+	toggleMuted.append(toggleMutedCheckbox, useZutContext().options.toggleMutedTranslation ?? "");
+
+	toggleMutedCheckbox.onchange = () => {
+		if (toggleMutedCheckbox.checked?.valueOf()) {
+			document.getElementById(overlayId)?.classList.remove(mutedHiddenClass);
+		} else {
+			document.getElementById(overlayId)?.classList.add(mutedHiddenClass);
+		}
+	};
+
+	return toggleMuted;
 }

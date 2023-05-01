@@ -2,8 +2,9 @@ import { useZutContext } from "../index";
 import { css } from "@emotion/css";
 import { getLeftPanel } from "./left";
 import { getRightPanel } from "./right";
+import {mutedHiddenClass} from "./stacklist";
 
-const overlayId = "zut-overlay";
+export const overlayId = "zut-overlay";
 
 const staticHtml = `
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:ital@0;1&display=swap" rel="stylesheet"> 
@@ -27,6 +28,7 @@ function createOverlay(): HTMLDivElement {
 	const backdrop = document.createElement("div");
 	backdrop.className = overlayBackdropClass;
 	backdrop.id = overlayId;
+	backdrop.classList.add(mutedHiddenClass);
 
 	const overlayClass = css`
     position: fixed;

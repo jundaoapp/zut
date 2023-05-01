@@ -46,6 +46,81 @@ try {
 ```
 :sparkles: All done!
 
+# Options
+```ts
+interface ZutOptions {
+  maxHighlightLenght?: number;
+  noStacktraceTranslation?: string;
+  unknownTranslation?: string;
+  toggleMutedTranslation?: string;
+  presetExtension?: Record<string, string>;
+  mutedEntries?: RegExp[];
+  theme?: Partial<ZutTheme>;
+}
+```
+
+## `maxHighlightLenght`
+Maximum code length to highlight (freezes on large files).
+
+```ts
+new Zut(error, {
+  maxHighlightLenght: 4000, // length in characters
+});
+```
+
+## `noStacktraceTranslation`, `unknownTranslation`, `toggleMutedTranslation`
+```ts
+new Zut(error, {
+  noStacktraceTranslation: "No Stacktrace",
+  unknownTranslation: "Unknown",
+  toggleMutedTranslation: "Show All",
+});
+```
+
+## `presetExtension`
+Preview highlight languages ([values from highlight.js](https://github.com/highlightjs/highlight.js/tree/main/src/languages)) per file extension (key).
+
+```ts
+new Zut(error, {
+  presetExtension: {
+    coffee: "coffeescript",
+  },
+});
+```
+
+## `mutedEntries`
+Stacklist entries to mute (regex matched on file path).
+
+```ts
+new Zut(error, {
+  mutedEntries: [
+    /my_folder/,
+  ],
+});
+```
+
+## `theme`
+```ts
+interface ZutTheme {
+  background: string; // color
+  activeBackground: string; // color
+  hoverBackground: string; // color
+  highlightedBackground: string; // color
+  textColor: string; // color
+  mutedOpacity: number; // from 0 to 1
+  accentColor: string; // color
+  sansFont: string; // font name
+  monoFont: string; // font name
+}
+```
+```ts
+new Zut(error, {
+  theme: {
+    background: "#000",
+    ...
+}});
+```
+
 # Contributing
 Before contributing please refer to [CONTRIBUTING.md](./CONTRIBUTING.md).
 
