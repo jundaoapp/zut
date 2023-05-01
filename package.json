@@ -51,7 +51,7 @@
     "context": "^3.0.5",
     "error-stack-parser": "^2.1.4",
     "highlight.js": "^11.7.0",
-    "source-map": "github:mozilla/source-map#6cc15e15ffa9e042c7add5e16ce128d1e0b08115",
+    "source-map": "github:mozilla/source-map#76be1e6795963a4ea72884d98356491fa5d45167",
     "whatwg-url": "^12.0.1"
   },
   "pnpm": {

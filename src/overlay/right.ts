@@ -159,8 +159,6 @@ function getCodePreview() {
 				: undefined;
 		const highlightedCode = hljsAuto ? hljsAuto.value : sourceCode;
 
-		console.log(hljsAuto);
-
 		const splitHighlightedCode = highlightedCode.split("\n");
 
 		for (let i = 0; i < splitHighlightedCode.length; i++) {
