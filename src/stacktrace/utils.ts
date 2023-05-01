@@ -49,7 +49,3 @@ export function getFileFolder(sourcePath: string) {
 export function getFileExtension(sourcePath: string): string {
 	return (getFileName(sourcePath).split(".").pop() ?? "").split("?")[0] ?? "";
 }
-
-export function isNodeModule(sourcePath: string) {
-	return sourcePath.includes("node_modules");
-}

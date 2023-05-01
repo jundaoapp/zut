@@ -1,9 +1,9 @@
 import { css } from "@emotion/css";
 import { useZutContext } from "../index";
 import { StackFrame } from "../stacktrace";
-import { isNodeModule } from "../stacktrace/utils";
 
 export let activeHasBeenSet = false;
+export const mutedHiddenClass = "zut-muted-hidden";
 
 export function getStackList() {
 	const stackListClass = css`
@@ -54,17 +54,25 @@ function createFrame(stackframe: StackFrame, id: number) {
     &.active {
       background: ${theme.activeBackground};
     }
+
+	  &.muted {
+      opacity: ${theme.mutedOpacity};
+
+			.${mutedHiddenClass} & {
+			  display: none;
+			}
+		}
   `;
 
 	const frame = document.createElement("div");
 	frame.className = stackframeClass;
 	frame.title = `${stackframe.getFileName()}:${stackframe.getOriginalLineNumber()}:${stackframe.getOriginalColumnNumber()}`;
 
-	if (isNodeModule(stackframe.getFileName())) {
-		frame.style.opacity = String(theme.mutedOpacity);
+	if (shouldMute(stackframe.getFileName())) {
+		frame.classList.add("muted");
 	}
 
-	if (!activeHasBeenSet && !isNodeModule(stackframe.getFileName())) {
+	if (!activeHasBeenSet && !shouldMute(stackframe.getFileName())) {
 		activeHasBeenSet = true;
 		frame.classList.add("active");
 	}
@@ -136,4 +144,11 @@ function createFrame(stackframe: StackFrame, id: number) {
 	frame.appendChild(frameFunction);
 
 	return frame;
+}
+
+export function shouldMute(path: string) {
+	for (const entry of useZutContext().options.mutedEntries || []) {
+		if (path.match(entry)) return true;
+	}
+	return false;
 }

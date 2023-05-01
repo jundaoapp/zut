@@ -2,11 +2,8 @@ import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
 import { useZutContext } from "../index";
 import { css } from "@emotion/css";
-import {
-	getFileExtension,
-	getFileName,
-	isNodeModule,
-} from "../stacktrace/utils";
+import { getFileExtension, getFileName } from "../stacktrace/utils";
+import { shouldMute } from "./stacklist";
 
 export function getRightPanel() {
 	const theme = useZutContext().theme;
@@ -68,7 +65,7 @@ export function getRightPanel() {
 
 		for (let i = 0; i < stackframes.length; i++) {
 			const frame = stackframes[i];
-			if (!isNodeModule(frame.getFileName())) {
+			if (!shouldMute(frame.getFileName())) {
 				codePreviewFilename.innerText =
 					getFileName(stackframes[i].getSource()) ?? "";
 				codePreviewLineNumber.innerText = `${stackframes[
@@ -183,7 +180,7 @@ function getCodePreview() {
 
 	for (let i = 0; i < stackframes.length; i++) {
 		const frame = stackframes[i];
-		if (!isNodeModule(frame.getFileName())) {
+		if (!shouldMute(frame.getFileName())) {
 			hightlight(i);
 			break;
 		}

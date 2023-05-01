@@ -9,7 +9,9 @@ export interface ZutOptions {
 	maxHighlightLenght?: number;
 	noStacktraceTranslation?: string;
 	unknownTranslation?: string;
+	toggleMutedTranslation?: string;
 	presetExtension?: Record<string, string>;
+	mutedEntries?: RegExp[];
 }
 
 interface ZutContext {
@@ -33,12 +35,14 @@ export default class Zut {
 				maxHighlightLenght: 4000,
 				noStacktraceTranslation: "No Stacktrace",
 				unknownTranslation: "Unknown",
+				toggleMutedTranslation: "Show All",
 				...options,
 				presetExtension: {
 					ts: "typescript",
 					js: "javascript",
 					...options.presetExtension,
 				},
+				mutedEntries: [/node_modules/, ...(options.mutedEntries || [])],
 			},
 			theme: combineTheme(options.theme),
 			stackframes:
