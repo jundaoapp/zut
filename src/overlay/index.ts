@@ -2,7 +2,7 @@ import { useZutContext } from "../index";
 import { css } from "@emotion/css";
 import { getLeftPanel } from "./left";
 import { getRightPanel } from "./right";
-import {mutedHiddenClass} from "./stacklist";
+import { mutedHiddenClass } from "./stacklist";
 
 export const overlayId = "zut-overlay";
 

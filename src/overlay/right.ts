@@ -2,11 +2,8 @@ import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
 import { useZutContext } from "../index";
 import { css } from "@emotion/css";
-import {
-	getFileExtension,
-	getFileName,
-} from "../stacktrace/utils";
-import {shouldMute} from "./stacklist";
+import { getFileExtension, getFileName } from "../stacktrace/utils";
+import { shouldMute } from "./stacklist";
 
 export function getRightPanel() {
 	const theme = useZutContext().theme;

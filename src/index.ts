@@ -42,10 +42,7 @@ export default class Zut {
 					js: "javascript",
 					...options.presetExtension,
 				},
-				mutedEntries: [
-					/node_modules/,
-					...(options.mutedEntries || []),
-				]
+				mutedEntries: [/node_modules/, ...(options.mutedEntries || [])],
 			},
 			theme: combineTheme(options.theme),
 			stackframes:

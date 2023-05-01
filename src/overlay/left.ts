@@ -1,7 +1,7 @@
 import { useZutContext } from "../index";
 import { css } from "@emotion/css";
-import {getStackList, mutedHiddenClass} from "./stacklist";
-import {overlayId} from "./index";
+import { getStackList, mutedHiddenClass } from "./stacklist";
+import { overlayId } from "./index";
 
 export function getLeftPanel() {
 	const leftPanelClass = css`
@@ -81,7 +81,6 @@ function getSeparator() {
 	return separator;
 }
 
-
 function getToggle() {
 	const toggleMutedClass = css`
 	  font-size: .75rem;
@@ -99,7 +98,10 @@ function getToggle() {
 	const toggleMutedCheckbox = document.createElement("input");
 	toggleMutedCheckbox.type = "checkbox";
 
-	toggleMuted.append(toggleMutedCheckbox, useZutContext().options.toggleMutedTranslation ?? "");
+	toggleMuted.append(
+		toggleMutedCheckbox,
+		useZutContext().options.toggleMutedTranslation ?? "",
+	);
 
 	toggleMutedCheckbox.onchange = () => {
 		if (toggleMutedCheckbox.checked?.valueOf()) {

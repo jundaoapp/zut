@@ -1,7 +1,6 @@
 import { css } from "@emotion/css";
 import { useZutContext } from "../index";
 import { StackFrame } from "../stacktrace";
-import picomatch from "picomatch";
 
 export let activeHasBeenSet = false;
 export const mutedHiddenClass = "zut-muted-hidden";
