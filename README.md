@@ -46,6 +46,16 @@ try {
 ```
 :sparkles: All done!
 
+# API
+## `.close()`
+Programmatically close the overlay.
+
+```ts
+const zut = new Zut(error);
+
+zut.close();
+```
+
 # Options
 ```ts
 interface ZutOptions {
@@ -55,6 +65,7 @@ interface ZutOptions {
   toggleMutedTranslation?: string;
   presetExtension?: Record<string, string>;
   mutedEntries?: RegExp[];
+  closable?: boolean;
   theme?: Partial<ZutTheme>;
 }
 ```
@@ -96,6 +107,15 @@ new Zut(error, {
   mutedEntries: [
     /my_folder/,
   ],
+});
+```
+
+## `closable`
+Whether the overlay should close when clicked outside. (defaults to true)
+
+```ts
+new Zut(error, {
+  closable: false,
 });
 ```
 

@@ -1,6 +1,6 @@
 import { combineTheme, ZutTheme } from "./theme";
 import { createContext } from "context";
-import { getOverlay } from "./overlay";
+import { closeOverlay, getOverlay } from "./overlay";
 import { parseError, StackFrame } from "./stacktrace";
 
 export interface ZutOptions {
@@ -12,6 +12,7 @@ export interface ZutOptions {
 	toggleMutedTranslation?: string;
 	presetExtension?: Record<string, string>;
 	mutedEntries?: RegExp[];
+	closable?: boolean;
 }
 
 interface ZutContext {
@@ -36,6 +37,7 @@ export default class Zut {
 				noStacktraceTranslation: "No Stacktrace",
 				unknownTranslation: "Unknown",
 				toggleMutedTranslation: "Show All",
+				closable: true,
 				...options,
 				presetExtension: {
 					ts: "typescript",
@@ -54,6 +56,10 @@ export default class Zut {
 
 	private run() {
 		document.body.appendChild(getOverlay());
+	}
+
+	public close() {
+		closeOverlay();
 	}
 }
 

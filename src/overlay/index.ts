@@ -30,6 +30,13 @@ function createOverlay(): HTMLDivElement {
 	backdrop.id = overlayId;
 	backdrop.classList.add(mutedHiddenClass);
 
+	if (useZutContext().options.closable) {
+		backdrop.addEventListener(
+			"click",
+			(e) => e.target === e.currentTarget && closeOverlay(),
+		);
+	}
+
 	const overlayClass = css`
     position: fixed;
     inset: min(2rem, 5vw);
@@ -58,4 +65,8 @@ function createOverlay(): HTMLDivElement {
 	backdrop.appendChild(overlay);
 	document.body.appendChild(backdrop);
 	return backdrop;
+}
+
+export function closeOverlay() {
+	document.getElementById(overlayId)?.remove();
 }
